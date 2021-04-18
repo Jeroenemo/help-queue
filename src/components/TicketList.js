@@ -3,7 +3,7 @@ import Ticket from './Ticket';
 
 function TicketList(){
   return (
-    <Ticket/>
+    <Ticket />
   );
 }
 
