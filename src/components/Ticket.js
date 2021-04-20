@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-function Ticket(props){
+function Ticket({
+  location,
+  names, 
+  issue
+}){
+
   return (
-    <React.Fragment>
+    <>
       <h3>3a</h3>
-      <h3>{props.location} - {props.names}</h3>
-      <p><em>{props.issue}</em></p>
+      <h3>{location} - {names}</h3>
+      <p><em>{issue}</em></p>
       <hr />
-    </React.Fragment>
+    </>
   );
 }
 
