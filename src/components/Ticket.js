@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 function Ticket({
   location,
   names, 
-  issue
+  issue,
+  id,
+  whenTicketClicked
 }){
-
   return (
     <>
-      <h3>3a</h3>
-      <h3>{location} - {names}</h3>
-      <p><em>{issue}</em></p>
-      <hr />
+      <div onClick = {() => whenTicketClicked(id)}>
+        <h3>{location} - {names}</h3>
+        <p><em>{issue}</em></p>
+        <hr />
+      </div>
     </>
   );
 }
@@ -20,7 +22,9 @@ function Ticket({
 Ticket.propTypes = {
   names: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired,
-  issue: PropTypes.string
+  issue: PropTypes.string,
+  id: PropTypes.string,
+  whenTicketClicked: PropTypes.func
 };
 
 export default Ticket;
