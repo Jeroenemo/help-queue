@@ -13,7 +13,6 @@ class TicketControl extends Component {
     super(props);
     console.log(props);
     this.state = {
-      //formVisibleOnPage: false,
       selectedTicket: null,
       editing: false
     };
@@ -58,7 +57,7 @@ class TicketControl extends Component {
 
   handleAddingNewTicketToList = (newTicket) => {
     const { dispatch } = this.props;
-    const { id, names, location, issue } = newTicket;
+    // const { id, names, location, issue } = newTicket;
     const action = a.addTicket(newTicket);
     dispatch(action);
     const action2 = a.toggleForm();
@@ -85,7 +84,7 @@ class TicketControl extends Component {
 
   handleEditingTicketInList = (ticketToEdit) => {
     const { dispatch } = this.props;
-    const { id, names, location, issue } = ticketToEdit;
+    // const { id, names, location, issue } = ticketToEdit;
     const action = a.addTicket(ticketToEdit)
     dispatch(action);
     this.setState({
