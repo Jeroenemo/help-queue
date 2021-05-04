@@ -6,6 +6,7 @@ import TicketDetail from './TicketDetail';
 import EditTicketForm from './EditTicketForm';
 import PropTypes from "prop-types";
 import * as a from './../actions';
+import { withFirestore } from 'react-redux-firebase'
 
 class TicketControl extends Component {
 
@@ -18,25 +19,25 @@ class TicketControl extends Component {
     };
   }
 
-  componentDidMount() {
-    this.waitTimeUpdateTimer = setInterval(() =>
-      this.updateTicketElapsedWaitTime(),
-    60000
-    );
-  }
+  // componentDidMount() {
+  //   this.waitTimeUpdateTimer = setInterval(() =>
+  //     this.updateTicketElapsedWaitTime(),
+  //   60000
+  //   );
+  // }
 
-  componentWillUnmount(){
-    clearInterval(this.waitTimeUpdateTimer);
-  }
+  // componentWillUnmount(){
+  //   clearInterval(this.waitTimeUpdateTimer);
+  // }
 
-  updateTicketElapsedWaitTime = () => {
-    const { dispatch } = this.props;
-    Object.values(this.props.masterTicketList).forEach(ticket => {
-      const newFormattedWaitTime = ticket.timeOpen.fromNow(true);
-      const action = a.updateTime(ticket.id, newFormattedWaitTime);
-      dispatch(action);
-    });
-  }
+  // updateTicketElapsedWaitTime = () => {
+  //   const { dispatch } = this.props;
+  //   Object.values(this.props.masterTicketList).forEach(ticket => {
+  //     const newFormattedWaitTime = ticket.timeOpen.fromNow(true);
+  //     const action = a.updateTime(ticket.id, newFormattedWaitTime);
+  //     dispatch(action);
+  //   });
+  // }
 
   handleClick = () => {
     if (this.state.selectedTicket != null) {
@@ -55,43 +56,43 @@ class TicketControl extends Component {
     }
   }
 
-  handleAddingNewTicketToList = (newTicket) => {
+  handleAddingNewTicketToList = () => {
     const { dispatch } = this.props;
     // const { id, names, location, issue } = newTicket;
-    const action = a.addTicket(newTicket);
-    dispatch(action);
     const action2 = a.toggleForm();
     dispatch(action2);
     //this.setState({formVisibleOnPage: false});
   }
 
   handleChangingSelectedTicket = (id) => {
-    const selectedTicket = this.props.masterTicketList[id];
-    this.setState({selectedTicket: selectedTicket});
-  }  
+    this.props.firestore.get({collection: 'tickets', doc: id}).then((ticket) => {
+      const firestoreTicket = {
+        names: ticket.get("names"),
+        location: ticket.get("location"),
+        issue: ticket.get("issue"),
+        id: ticket.id
+      }
+      this.setState({selectedTicket: firestoreTicket });
+    });
+  }
 
   handleDeletingTicket = (id) => {
-    const { dispatch } = this.props;
-    const action = a.deleteTicket(id);
-    dispatch(action);
+    this.props.firestore.delete({collection: 'tickets', doc: id});
     this.setState({selectedTicket: null});
   }
+  
 
   handleEditClick = () => {
     console.log("HANDLE IT");
     this.setState({editing: true});
   }
 
-  handleEditingTicketInList = (ticketToEdit) => {
-    const { dispatch } = this.props;
-    // const { id, names, location, issue } = ticketToEdit;
-    const action = a.addTicket(ticketToEdit)
-    dispatch(action);
-    this.setState({
-      editing: false,
-      selectedTicket: null
-    });
-  }
+  handleEditingTicketInList = () => {
+  this.setState({
+    editing: false,
+    selectedTicket: null
+  });
+}
 
   render(){
     let currentlyVisibleState = null;
@@ -117,7 +118,6 @@ class TicketControl extends Component {
     } else {
 
       currentlyVisibleState = <TicketList 
-        ticketList={this.props.masterTicketList} 
         onTicketSelection={this.handleChangingSelectedTicket} />;
       buttonText = "Add Ticket";
     }
@@ -131,17 +131,15 @@ class TicketControl extends Component {
 }
 
 TicketControl.propTypes = {
-  masterTicketList: PropTypes.object,
   formVisibleOnPage: PropTypes.bool
 };
 
 const mapStateToProps = (state) => {
   return {
-    masterTicketList: state.masterTicketList,
     formVisibleOnPage: state.formVisibleOnPage
   }
 }
 
 TicketControl = connect(mapStateToProps)(TicketControl);
 
-export default TicketControl;
+export default withFirestore(TicketControl);
