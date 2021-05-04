@@ -1,6 +1,8 @@
 import React, { Component }from "react";
 import Header from './Header';
 import TicketControl from "./TicketControl";
+import SignIn from "./SignIn";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 
 export default class App extends Component {
@@ -42,15 +44,22 @@ export default class App extends Component {
       color = this.state.nothing
     }
     return (
-      <>
+      <Router>
         {console.log(color)}
         <h1 className={color}>{this.state.number}</h1>
         <button type="button" onClick={this.incrementClick}>increment</button>
         <button type="button" onClick={this.decrementClick}>decrement</button>
         <button type="button" onClick={this.resetClick}>reset</button>
         <Header />
-        <TicketControl />
-      </>
+        <Switch>
+          <Route path="/signin">
+            <SignIn />
+          </Route>
+          <Route path="/">
+            <TicketControl />
+          </Route>
+        </Switch>
+      </Router>
     )
   }
 }
