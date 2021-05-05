@@ -1,11 +1,27 @@
 import React from 'react';
 import ticketsImage from './../img/Studio_Project.png';
 import { Link } from "react-router-dom";
+import styled from 'styled-components';
+
+const HelpQueueHeader = styled.h1`
+  font-size: 24px;
+  text-align: center;
+  color: white;
+`;
+
+const StyledWrapper = styled.section`
+  background-color: orange;
+`;
 
 function Header(){
   return (
-    <>
-      <h1>Help Queue</h1>
+    <React.Fragment>
+      <StyledWrapper>
+        <HelpQueueHeader>
+          Help Queue
+        </HelpQueueHeader>
+
+      </StyledWrapper>
       <ul>
         <li>
           <Link to="/">Home</Link>
@@ -14,8 +30,7 @@ function Header(){
           <Link to="/signin">Sign In</Link>
         </li>
       </ul>
-      {/* <img src={ticketsImage} alt="An image of tickets" /> */}
-    </>
+    </React.Fragment>
   );
 }
 
