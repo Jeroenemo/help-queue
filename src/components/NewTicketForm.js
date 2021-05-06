@@ -9,7 +9,7 @@ function NewTicketForm(props){
 
   const firestore = useFirestore();
 
-  function addTicketToFireStore(event) {
+  function addTicketToFirestore(event) {
     event.preventDefault();
     props.onNewTicketCreation();
       return firestore.collection('tickets').add(
@@ -24,7 +24,7 @@ function NewTicketForm(props){
   return (
     <>
       <ReusableForm 
-        formSubmissionHandler={addTicketToFireStore}
+        formSubmissionHandler={addTicketToFirestore}
         buttonText="Help!" />
     </>
   );
